@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+    	<referenceContainer name="page.top">
+			<container name="page.top.container" htmlTag="div" before="-">
+				<container name="nav.banner4" htmlTag="div" htmlClass="banner-container-top" after="-">
+					<container name="nav.banner4.container" htmlTag="div" htmlClass="container">
+						<container name="nav.banner4.row" htmlTag="div" htmlClass="row">
+							<container name="nav.banner4.col6" htmlTag="div" htmlClass="col-md-6 col-sm-8 col-xs-12 col-md-offset-3">
+								<block class="ddv\SlideBanner\Block\Slider" name="homepageslider4" as="slideshow4">
+									<arguments>
+										<argument name="slider_id" xsi:type="string">homepage4slider</argument>
+									</arguments>
+								</block>								
+							</container>
+							<container name="nav.banner4.col3" htmlTag="div" htmlClass="col-md-3 col-sm-4 col-xs-12">
+								<block class="ddv\Onsaleproduct\Block\Onsaleproduct" name="Onsaleproduct" as="Onsaleproduct">
+									<action method="setTemplate">
+										 <argument name="template" xsi:type="string">ddv_Onsaleproduct::onsaleproduct.phtml</argument>
+									</action>
+								</block>
+							</container>
+						</container>
+					</container>
+				</container>
+			</container>
+			<referenceBlock name="nav.bar.title" remove="true"/>
+			<referenceBlock name="nav.banner" remove="true"/>
+		</referenceContainer>
+		<referenceContainer name="page.top">
+            <container name="content-top-home" label="content top home" htmlTag="div" htmlClass="content-top-home">	
+				<block class="Magento\Framework\View\Element\Template" name="top_home" template="Magento_Cms::top-home.phtml"/>
+			</container>
+        </referenceContainer>
+		<move element="content.top.home" destination="page.top" after="-"/>
+    </body>
+</page>

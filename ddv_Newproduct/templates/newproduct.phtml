@@ -1,0 +1,196 @@
+<?php 
+use Magento\Framework\App\Action\Action;
+if($this->getConfig('enabled')){ ?>
+	<?php 
+		$_productCollection = $this->getProducts();
+		$_helper = $this->helper('Magento\Catalog\Helper\Output');
+		$image = 'new_products_content_widget_grid';
+	?>
+	<?php if(!$_productCollection->getSize()){ ?> 
+			<div class="large-cat-hover">	
+				<p class="note-msg"><?php echo __('There are no products matching the selection.') ?></p>
+			</div>
+	<?php } else{ ?>
+		<?php $html = '<div class="container-new-products-banner">'; $i = 0; foreach ($_productCollection as $_product){ ?>
+		<?php 
+			$productImageThumb = $block->getImage($_product, 'category_page_grid-1');
+			$productImage = $block->getImage($_product, $image);
+			if($i == 0){
+				$html .= '<div class="new_products_content_widget_grid_owl"><div class="large-cat-hover">';
+			}
+			if($i == 0 || $i == 1){
+				$html .= '<div class="item-large-cat-hover">
+					<div class="large-cat-info">
+						<div class="cat-hover-percent">
+							<strong>15%</strong>
+							<span>+10% for Member</span>
+						</div>
+						<h3 class="title-product">
+							<a href="'.$_product->getProductUrl().'">
+								'.$_helper->productAttribute($_product, $_product->getName(), 'name').'
+							</a>
+						</h3>
+						<div class="info-price">
+							'.$this->helper('ddv\Superdeals\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product)).'
+						</div>
+					</div>
+					<div class="large-cat-thumb">
+						<div class="product-thumb">
+							<a class="product-thumb-link" href="'.$_product->getProductUrl().'">
+								<span class="first-thumb">
+									'.$productImage->toHtml().'
+								</span>
+								<span class="second-thumb">
+									'.$productImageThumb->toHtml().'
+								</span>
+							</a>
+							<div class="product-info-cart">
+								<div class="product-extra-link">';
+								if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()){
+									$html .= '<a href="#" data-post="'.$block->getAddToWishlistParams($_product).'" class="wishlist-link" data-action="add-to-wishlist" title="'.__('Add to Wishlist').'"> <i class="fa fa-heart-o"></i> </a>';
+								}
+								if ($block->getAddToCompareUrl()){
+									$compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+									$html .= '<a href="#" class="compare-link" data-post="'.$compareHelper->getPostDataParams($_product).'" title="'.__('Add to Compare').'"> <i class="fa fa-toggle-on"></i> </a>';
+								}
+								$html .= '<div class="quickview-product quickview-product-fixed-inline">
+										<a  data-role="quickview-button" data-id="'.$_product->getId().'" href="javascript: void(0);" data-href="'.$block->getUrl('quickview/product/quickview/id/' . $_product->getId()).'" title="'. __('Quick view').'"><i class="fa fa-search"></i></a>
+									</div>
+								</div>';
+								$html .= '<div class="actions-primary addcart-link">';
+								if ($_product->isSaleable()){
+									$postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+									$postData = $postDataHelper->getPostData($block->getAddToCartUrl($_product), ['product' => $_product->getEntityId()]);
+									$postParams = json_decode($postData, true);
+									$html .= '<form data-role="tocart-form" action="'.$postParams['action'].'" method="post">
+									  <input type="hidden" name="product" value="'.$postParams['data']['product'].'">
+									  <input type="hidden" name="'.Action::PARAM_NAME_URL_ENCODED.'" value="'.$postParams['data'][Action::PARAM_NAME_URL_ENCODED].'">
+									  '.$block->getBlockHtml('formkey').'
+									  <button type="submit"
+										  title="'.$block->escapeHtml(__('Add to Cart')).'"
+										  class="btn-add-to-cart">
+										<i class="fa fa-shopping-basket"></i>
+										'.$block->escapeHtml(__('Add to Cart')).'
+									  </button>
+									</form>';
+								}
+								else{
+									if ($_product->getIsSalable()){
+										$html .= '<span>'.__('In stock').'</span>';
+									}
+									else{
+										$html .= '<span>'.__('Out of stock').'</span>';
+									}
+								}
+								$html .= '</div>
+							</div>
+						</div>
+					</div>
+				</div>';
+			}
+			if($i == 1){
+				$html .= '</div>';
+			}
+			if($i == 2){
+				$html .= '<div class="small-cat-hover">';
+			}
+			if($i == 2 || $i == 3){
+				$html .= '<div class="item-small-cat-hover">
+					<div class="small-cat-thumb">
+						<div class="product-thumb">
+							<a class="product-thumb-link" href="'.$_product->getProductUrl().'">
+								<span class="first-thumb">
+									'.$productImage->toHtml().'
+								</span>
+								<span class="second-thumb">
+									'.$productImageThumb->toHtml().'
+								</span>
+							</a>
+							<div class="product-info-cart">
+								<div class="product-extra-link">';
+								if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()){
+									$html .= '<a href="#" data-post="'.$block->getAddToWishlistParams($_product).'" class="wishlist-link" data-action="add-to-wishlist" title="'.__('Add to Wishlist').'"> <i class="fa fa-heart-o"></i> </a>';
+								}
+								if ($block->getAddToCompareUrl()){
+									$compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+									$html .= '<a href="#" class="compare-link" data-post="'.$compareHelper->getPostDataParams($_product).'" title="'.__('Add to Compare').'"> <i class="fa fa-toggle-on"></i> </a>';
+								}
+								$html .= '<div class="quickview-product quickview-product-fixed-inline">
+										<a  data-role="quickview-button" data-id="'.$_product->getId().'" href="javascript: void(0);" data-href="'.$block->getUrl('quickview/product/quickview/id/' . $_product->getId()).'" title="'. __('Quick view').'"><i class="fa fa-search"></i></a>
+									</div>
+								</div>';
+								$html .= '<div class="actions-primary addcart-link">';
+								if ($_product->isSaleable()){
+									$postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+									$postData = $postDataHelper->getPostData($block->getAddToCartUrl($_product), ['product' => $_product->getEntityId()]);
+									$postParams = json_decode($postData, true);
+									$html .= '<form data-role="tocart-form" action="'.$postParams['action'].'" method="post">
+									  <input type="hidden" name="product" value="'.$postParams['data']['product'].'">
+									  <input type="hidden" name="'.Action::PARAM_NAME_URL_ENCODED.'" value="'.$postParams['data'][Action::PARAM_NAME_URL_ENCODED].'">
+									  '.$block->getBlockHtml('formkey').'
+									  <button type="submit"
+										  title="'.$block->escapeHtml(__('Add to Cart')).'"
+										  class="btn-add-to-cart">
+										<i class="fa fa-shopping-basket"></i>
+										'.$block->escapeHtml(__('Add to Cart')).'
+									  </button>
+									</form>';
+								}
+								else{
+									if ($_product->getIsSalable()){
+										$html .= '<span>'.__('In stock').'</span>';
+									}
+									else{
+										$html .= '<span>'.__('Out of stock').'</span>';
+									}
+								}
+								$html .= '</div>
+							</div>
+						</div>
+					</div>
+					<div class="small-cat-info">
+						<h3 class="title-product">
+							<a href="'.$_product->getProductUrl().'">
+								'.$_helper->productAttribute($_product, $_product->getName(), 'name').'
+							</a>
+						</h3>
+						<div class="info-price">
+							'.$this->helper('ddv\Superdeals\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product)).'
+						</div>
+					</div>
+				</div>';
+			}
+			if($i == 3){
+				$html .= '</div></div>';
+			}
+		?>
+		<?php $i ++; if($i == 4){ $i = 0; } } ?>
+	<?php $html .= '</div>'; echo $html; } ?>
+	<script type="text/x-magento-init">
+	{
+		"[data-role=tocart-form], .form.map.checkout": {
+			"catalogAddToCart": {}
+		}
+	}
+	</script>
+	<script>
+		require([
+			'jquery',
+			'mage/mage',
+			'ddv/owl'
+		], function ($) {
+			'use strict';
+			jQuery(".container-new-products-banner").owlCarousel({
+				autoPlay : false,
+				items : 1,
+				slideSpeed : 500,
+				paginationSpeed : 500,
+				rewindSpeed : 500,
+				navigation : true,
+				stopOnHover : true,
+				pagination :false,
+				scrollPerPage:true,
+			});
+		});
+	</script>
+<?php } ?>

@@ -1,0 +1,24 @@
+<div id="footer">
+	<div class="list-box-footer2">
+		<div class="container">
+			<div class="row">
+				<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_menu_home2')->toHtml(); ?>
+			</div>
+		</div>
+	</div>
+	<div class="footer2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-sm-5 col-xs-12">
+					<div class="copyright2">
+						<?php  echo $this->getLayout()->createBlock("ddv\Themeoption\Block\Customcss")->setTemplate("html/copyright.phtml")->toHtml() ?>
+					</div>
+				</div>
+				<div class="col-md-7 col-sm-7 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_payment_home2')->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="back-top" class="hidden-xs"><i class="fa fa-arrow-up"></i></div>
+</div>

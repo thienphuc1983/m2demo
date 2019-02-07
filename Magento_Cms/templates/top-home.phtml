@@ -1,0 +1,135 @@
+<div class="privacy-shipping-box">
+	<div class="container">
+		<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('home4_privacy_shipping')->toHtml(); ?>
+	</div>
+</div>
+<div class="hot-deal-box content-product18">
+	<div class="container">
+		<div class="product-box18">
+			<div class="row">
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat1_slider_home18')->toHtml(); ?>
+				</div>
+				<div class="col-md-3 col-sm-4 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat1_slider_bestsellerproduct_home18')->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+		<div class="product-box18">
+			<div class="row">
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat2_slider_home18')->toHtml(); ?>
+				</div>
+				<div class="col-md-3 col-sm-4 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat2_slider_bestsellerproduct_home18')->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+		<div class="product-box18">
+			<div class="row">
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat3_slider_home18')->toHtml(); ?>
+				</div>
+				<div class="col-md-3 col-sm-4 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat3_slider_bestsellerproduct_home18')->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+		<div class="product-box18">
+			<div class="row">
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat4_slider_home18')->toHtml(); ?>
+				</div>
+				<div class="col-md-3 col-sm-4 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat4_slider_bestsellerproduct_home18')->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+		<div class="product-box18">
+			<div class="row">
+				<div class="col-md-9 col-sm-8 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat5_slider_home18')->toHtml(); ?>
+				</div>
+				<div class="col-md-3 col-sm-4 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('cat5_slider_bestsellerproduct_home18')->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="featured-product2-container">
+	<div class="container">
+		<div class="list-service2">
+			<div class="row">
+				<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('list_service2_home2')->toHtml(); ?>
+			</div>
+		</div>
+		<div class="bottom-home2">
+			<div class="row">
+				<div class="col-md-4 col-sm-4 col-xs-12">
+					<?php echo $block->getLayout()->createBlock('ddv\Blog\Block\Sidebar\Recent')->setTemplate('ddv_Blog::sidebar/slider.phtml')->toHtml();?>
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock("Magento\Newsletter\Block\Subscribe")->setTemplate("Magento_Newsletter::subscribe.phtml")->toHtml() ?>
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-12">
+					<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('testimonials_home2')->toHtml(); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+require([
+		'jquery',
+		'mage/mage',
+		'ddv/owl'
+	], function ($) {
+		'use strict';
+	$( document ).ready(function() {
+		$("ul.tabs li").click(function() {
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			$(this).closest(".common-tab-system-fixed").find(".tab_content").hide();
+			$(this).closest(".common-tab-system-fixed").find(".tab_content").removeClass("animate1");
+			var activeTab = $(this).attr("rel");
+			$("#"+activeTab) .addClass("animate1");
+			$("#"+activeTab).fadeIn();
+		});
+		if($('.hot-deal-tab-slider .wrap-item').length>0){
+			$('.hot-deal-tab-slider .wrap-item').each(function(){
+				$(this).owlCarousel({
+					items:4,
+					itemsCustom: [ 
+					[0, 1], 
+					[480, 2], 
+					[768, 3], 
+					[992, 4], 
+					[1200, 4] 
+					],
+					pagination: false,
+					navigation: true,
+					navigationText:['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>']
+				});
+			});
+		}
+		if($('.product-bestseller-slider-fixed .wrap-item').length>0){
+			$('.product-bestseller-slider-fixed .wrap-item').each(function(){
+				$(this).owlCarousel({
+					items: 1,
+					itemsCustom: [ 
+					[0, 1], 
+					[480, 1], 
+					[768, 1], 
+					[992, 1], 
+					[1200, 1] 
+					],
+					pagination: false,
+					navigation: true,
+					navigationText:['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>']
+				});
+			});
+		}
+	});
+});
+</script>

@@ -1,0 +1,118 @@
+<?php 
+use Magento\Framework\App\Action\Action;
+if($this->getConfig('enabled')){ // start enable module?>
+	<?php $_productCollection = $this->getProducts();
+		$_helper = $this->helper('Magento\Catalog\Helper\Output');
+		$image = 'new_products_content_widget_grid';
+	?>
+	<div class="list-product-new list-product-new-custom-home4">
+		<h2 class="title"><?php echo $this->getConfig('title')?></h2>
+		<div class="row">
+			<?php if(!$_productCollection->getSize()): ?> 
+				<div class="col-md-12">	
+					<p class="note-msg"><?php echo __('There are no products matching the selection.') ?></p>
+				</div>
+			<?php else: ?>
+				<?php foreach ($_productCollection as $_product){ ?>
+				<?php 
+					$productImage = $block->getImage($_product, $image);
+					$productImageThumb = $block->getImage($_product, 'category_page_grid-1');
+					$pec_ = $this->helper('ddv\Superdeals\Helper\Data')->showLableSalePriceCategory($_product, true);
+				?>
+				<div class="col-md-3 col-sm-6 col-xs-12">
+					<div class="item-product">
+						<div class="product-thumb">
+							<a href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>" class="product-thumb-link">
+								<span class="first-thumb">
+									<?php echo $productImage->toHtml(); ?>
+								</span>
+								<span class="second-thumb">
+									<?php echo $productImageThumb->toHtml(); ?>
+								</span>
+							</a>
+							<div class="product-info-cart">
+								  <div class="product-extra-link">    									
+										<?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()): ?>
+												<a href="#"
+												   data-post='<?php echo $block->getAddToWishlistParams($_product); ?>'
+												   class="wishlist-link" data-action="add-to-wishlist"
+												   title="<?php echo __('Add to Wishlist') ?>">
+													<i class="fa fa-heart-o"></i>
+												</a>
+										<?php endif; ?>
+										<?php if ($block->getAddToCompareUrl()): ?>
+											<?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
+											<a href="#" class="compare-link"
+											   data-post='<?php echo $compareHelper->getPostDataParams($_product);?>'
+											   title="<?php echo __('Add to Compare') ?>">
+												<i class="fa fa-toggle-on"></i>
+											</a>
+										<?php endif; ?>
+										<div class="quickview-product quickview-product-fixed-inline">
+											<a  data-role="quickview-button" data-id="<?php echo $_product->getId(); ?>" href="javascript: void(0);" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_product->getId()) ?>" title="<?php echo __('Quick view');?>"><i class="fa fa-search"></i></a>
+										</div>
+								  </div>
+								<div class="actions-primary addcart-link">
+								  <?php if ($_product->isSaleable()): ?>
+									<?php
+									  $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+									  $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_product), ['product' => $_product->getEntityId()]);
+									  $postParams = json_decode($postData, true);
+									  ?>
+									<form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
+									  <input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
+									  <input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+									  <?php echo $block->getBlockHtml('formkey')?>
+									  <button type="submit"
+										  title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
+										  class="btn-add-to-cart">
+										<i class="fa fa-shopping-basket"></i>
+										<?php echo $block->escapeHtml(__('Add to Cart')); ?>
+									  </button>
+									</form>
+								  <?php else: ?>
+									<?php if ($_product->getIsSalable()): ?>
+									  <div class="stock available"><span><?php echo __('In stock') ?></span></div>
+									<?php else: ?>
+									  <div class="stock unavailable"><span><?php echo __('Out of stock') ?></span></div>
+									<?php endif; ?>
+								  <?php endif; ?>
+								</div>
+							</div>
+						</div>
+						<div class="product-info">
+							<h3 class="title-product">
+								<a title="<?php echo $block->escapeHtml($_product->getName()) ?>"
+								   href="<?php echo $block->getProductUrl($_product) ?>"
+								   class="product-item-link">
+									<?php echo $block->escapeHtml($_product->getName()) ?>
+								</a>
+							</h3>
+							<div class="info-price">
+								<?php
+									echo $this->helper('ddv\Superdeals\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product));
+								?>
+							</div>
+							<div class="product-rating">
+								<?php echo $block->getReviewsSummaryHtml($_product, null,true); ?>
+							</div>
+						</div>
+						<?php if($pec_){ ?>
+						<div class="percent-saleoff">
+							<span><label><?php echo $pec_;?></label> OFF</span>
+						</div>
+						<?php } ?>
+					</div>
+				</div>
+				<?php } ?>
+			<?php endif; ?>
+		</div>
+	</div>
+	<script type="text/x-magento-init">
+	{
+		"[data-role=tocart-form], .form.map.checkout": {
+			"catalogAddToCart": {}
+		}
+	}
+	</script>
+<?php } ?>

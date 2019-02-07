@@ -1,0 +1,79 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<li data-role="product-item">
+	<div class="mini-cart-edit">
+		<a href="#" data-bind="attr: {'data-cart-item': item_id, title: $t('Remove item')}"
+		   class="delete-mini-cart-item action delete">
+			<i class="fa fa-trash-o"></i>
+		</a>
+		<!-- ko if: is_visible_in_site_visibility -->
+		<a data-bind="attr: {href: configure_url, title: $t('Edit item')}" class="edit-mini-cart-item">
+			<i class="fa fa-pencil"></i>
+		</a>
+		<!-- /ko -->
+	</div>
+	<div class="mini-cart-thumb">
+		<!-- ko if: product_has_url -->
+        <a data-bind="attr: {href: product_url, title: product_name}" tabindex="-1" class="product-item-photo">
+            <!-- ko foreach: $parent.getRegion('itemImage') -->
+                <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
+            <!-- /ko -->
+        </a>
+        <!-- /ko -->
+        <!-- ko ifnot: product_has_url -->
+        <span class="product-item-photo">
+            <!-- ko foreach: $parent.getRegion('itemImage') -->
+                <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
+            <!-- /ko -->
+        </span>
+        <!-- /ko -->
+	</div>
+	<div class="mini-cart-info">
+		<h3>
+		 <!-- ko if: product_has_url -->
+		<a data-bind="attr: {href: product_url}, text: product_name"></a>
+		<!-- /ko -->
+		<!-- ko ifnot: product_has_url -->
+			<!-- ko text: product_name --><!-- /ko -->
+		<!-- /ko -->
+		</h3>
+		<div class="info-price">
+			<!-- ko if: canApplyMsrp -->
+			<div class="details-map">
+				<span class="label" data-bind="i18n: 'Price'"></span>
+				<span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
+			</div>
+			<!-- /ko -->
+			<!-- ko ifnot: canApplyMsrp -->
+			<!-- ko foreach: $parent.getRegion('priceSidebar') -->
+				<!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
+			<!-- /ko -->
+			<!-- /ko -->
+		</div>
+		<div class="details-qty qty">
+			<input data-bind="attr: {
+				   id: 'cart-item-'+item_id+'-qty',
+				   'data-cart-item': item_id,
+				   'data-item-qty': qty,
+				   'data-cart-item-id': product_sku
+				   }, value: qty"
+				   type="number"
+				   size="4"
+				   class="item-qty cart-item-qty"
+				   maxlength="12"/>
+			<button data-bind="attr: {
+				   id: 'update-cart-item-'+item_id,
+				   'data-cart-item': item_id,
+				   title: $t('Update')
+				   }"
+					class="update-cart-item"
+					style="display: none">
+				<i class="fa fa-floppy-o"></i>
+			</button>
+		</div>
+	</div>
+</li>

@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="box-bottom-home2">
+	<div class="box-newsletter">
+		<h2><?php /* @escapeNotVerified */ echo __('Newsletter') ?></h2>
+		<p><?php /* @escapeNotVerified */ echo __('Make sure you dont miss interesting happenings by joining our newsletter') ?>.</p>
+		 <form
+            novalidate
+            action="<?php /* @escapeNotVerified */ echo $block->getFormActionUrl() ?>"
+            method="post"
+            data-mage-init='{"validation": {"errorClass": "mage-error"}}'
+            id="newsletter-validate-detail">
+			<input name="email" type="email" id="newsletter"
+                                placeholder="<?php /* @escapeNotVerified */ echo __('Enter your email address') ?>"
+                                data-validate="{required:true, 'validate-email':true}"/>
+            <button title="<?php /* @escapeNotVerified */ echo __('Subscribe') ?>" type="submit">
+				<span><?php /* @escapeNotVerified */ echo __('Subscribe') ?></span>
+			</button>
+		</form>
+	</div>
+	<div class="social-home2 social-network">
+		<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('connect_with_us_home2')->toHtml(); ?>
+	</div>
+</div>

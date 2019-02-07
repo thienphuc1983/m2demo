@@ -1,0 +1,136 @@
+<?php 
+use Magento\Framework\App\Action\Action;
+if($this->getConfig('enabled')){
+$_productCollection = $this->getProducts();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$image = 'new_products_content_widget_grid';
+?>
+	<div class="hot-deals hot-deals-custom-home6">
+		<h2><i class="fa fa-clock-o"></i> <?php echo $this->getConfig('title')?></h2>
+		<?php if(!$_productCollection->getSize()): ?> 
+			<div class="hotdeals-slider slider-home4 simple-owl-slider">
+				<p class="note-msg"><?php echo __('There are no products matching the selection.') ?></p>
+			</div>
+		<?php else: ?>
+			<div class="hotdeals-slider slider-home4 simple-owl-slider">
+				<div class="wrap-item">
+					<?php
+						$rows = $this->getConfig('items');
+					?>
+					<?php $i=0; foreach ($_productCollection as $_product): 
+						$productImage = $block->getImage($_product, $image);
+					?>
+						<?php if($i % $rows == 0) echo '<div class="item"> <ul class="list-product-hotdeal">'; ?>
+						<li>
+							<div class="zoom-image-thumb product-thumb">
+								<a href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>"><?php echo strip_tags($productImage->toHtml(), '<img>'); ?></a>
+								<?php if ($_product->isSaleable()): ?>
+								<?php
+								  $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+								  $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_product), ['product' => $_product->getEntityId()]);
+								  $postParams = json_decode($postData, true);
+								  ?>
+								<form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
+								  <input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
+								  <input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+								  <?php echo $block->getBlockHtml('formkey')?>
+								  <button type="submit"
+									  title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
+									  class="addcart-link addcart-single">
+									<i class="fa fa-shopping-basket"></i>
+								  </button>
+								</form>
+							  <?php else: ?>
+								<?php if ($_product->getIsSalable()): ?>
+								  <div class="stock available"><span><?php echo __('In stock') ?></span></div>
+								<?php else: ?>
+								  <div class="stock unavailable"><span><?php echo __('Out of stock') ?></span></div>
+								<?php endif; ?>
+							  <?php endif; ?>
+							</div>
+							<div class="product-info">
+								<h3 class="title-product-new-product"><a title="<?php echo $block->escapeHtml($_product->getName()) ?>"
+								   href="<?php echo $block->getProductUrl($_product) ?>"
+								   class="product-item-link">
+									<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+								</a></h3>
+								<div class="info-price">
+									<?php echo $this->helper('ddv\Superdeals\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product));  ?>
+								</div>
+								<?php 
+									$toDate = $_product->getSpecialTODate();
+									$fromDate = $_product->getSpecialFromDate();
+									if(strtotime($fromDate) < strtotime($block->getCurrentTime()) && strtotime($toDate) >= strtotime($block->getCurrentTime())){
+								?>
+								<div class="hotdeal-countdown"  data-date="<?php echo date('d/m/Y',strtotime($toDate));?>"></div>								
+								<?php } ?>
+							</div>
+						</li>
+						<?php $i++;?>
+						<?php if($i %$rows == 0) echo "</ul></div>"; ?>
+					<?php endforeach; ?>
+					<?php if($i %$rows != 0) echo "</ul></div>"; ?>
+				</div>
+			</div>
+			<script type="text/x-magento-init">
+			{
+				"[data-role=tocart-form], .form.map.checkout": {
+					"catalogAddToCart": {}
+				}
+			}
+			</script>
+			<script>
+				require([
+					'jquery',
+					'mage/mage',
+					'ddv/owl',
+					'ddv/timecircles'
+				], function ($) {
+					'use strict';
+					if($('.hotdeal-countdown').length>0){
+						$(".hotdeal-countdown").TimeCircles({
+							fg_width: 0,
+							bg_width: 1,
+							text_size: 0.07,
+							time: {
+								Days: {
+									show: true,
+									text: "D",
+								},
+								Hours: {
+									show: true,
+									text: "H",
+								},
+								Minutes: {
+									show: true,
+									text: "M",
+								},
+								Seconds: {
+									show: true,
+									text: "S",
+								}
+							}
+						}); 
+					}
+					if($('.hotdeals-slider.slider-home4.simple-owl-slider').length>0){
+						$('.hotdeals-slider.slider-home4.simple-owl-slider').each(function(){
+							$(this).find('.wrap-item').owlCarousel({
+								items: 1,
+								itemsCustom: [ 
+								[0, 1], 
+								[480, 1], 
+								[768, 1], 
+								[992, 1], 
+								[1200, 1] 
+								],
+								pagination: false,
+								navigation: true,
+								navigationText:['<span class="lnr lnr-chevron-left"></span>','<span class="lnr lnr-chevron-right"></span>']
+							});
+						});
+					}
+				});
+			</script>
+		<?php endif; ?>
+	</div>
+<?php } ?>

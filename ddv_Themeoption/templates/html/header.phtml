@@ -1,0 +1,106 @@
+<div id="header" class="header-container_lk style2">
+	<div class="header-content">
+		<div class="header">
+			<div class="container">
+				<div class="sub-header4">
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<ul class="top-info top-info-left">
+								<li class="top-contact">
+									<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('call-us')->toHtml(); ?>
+								</li>
+								<li class="top-language has-child">
+									<a href="#"><?php echo __('Language') ?></a>
+									<ul class="sub-menu-top">
+									  <?php echo $this->getChildHtml("store_language"); ?>
+									</ul>
+								</li>
+								<li class="top-currency has-child">
+									<a href="#"><?php echo __('Currency') ?></a>
+									<ul class="sub-menu-top">
+									  <?php echo $this->getChildHtml("currency"); ?>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="top-info">
+								<?php  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('sub-header-menu')->toHtml(); ?>								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="header4">
+					<div class="row">
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<div class="logo2">
+								<?php echo $this->getChildHtml("logo"); ?>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-5 col-xs-12">
+							<?php echo $this->getChildHtml("topSearch");?>
+						</div>
+						<div class="col-md-3 col-sm-4 col-xs-12">
+							<div class="wrap-register-cart">
+								<div class="register-box">
+									<ul>
+										<?php if(!$this->helper('ddv\Themeoption\Helper\Data')->isLoggedIn()){ ?>
+										<li><a href="<?php echo $this->helper('ddv\Themeoption\Helper\Data')->getBaseUrl('customer/account/login');?>"><?php echo __('Login');?></a></li>
+										<li><a href="<?php echo $this->helper('ddv\Themeoption\Helper\Data')->getBaseUrl('customer/account/create');?>"><?php echo __('Register');?></a></li>
+										<?php }else{ ?>
+										<li><a href="<?php echo $this->helper('ddv\Themeoption\Helper\Data')->getBaseUrl('customer/account/logout');?>"><?php echo __('Logout');?></a></li>
+										<?php } ?>
+									</ul>
+									<p><?php echo __('My Account & Oder');?></p>
+								</div>
+								<div class="mini-cart-wrapper">
+								<?php echo $this->getChildHtml("minicart");?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="header-nav2 header-nav4">
+			<div class="container">
+				<div class="row">
+					<span data-action="toggle-nav" class="action nav-toggle"><span><?php /* @escapeNotVerified */ echo __('Toggle Nav') ?></span></span>
+					<div class="col-md-3 col-sm-3 col-xs-6 hidden-sm">
+						<?php echo $this->getChildHtml("menu.vertical")?>
+						<?php echo $this->getChildHtml("navigation-sections")?>
+						<?php echo $this->getChildHtml("top.navigation.sections")?>
+					</div>
+					<div class="col-md-9 col-sm-12 col-xs-6">
+						<div class="header-wrapper-sticky<?php echo (!$this->helper('ddv\Themeoption\Helper\Themeconfig')->isEnableStickyHeader()) ? '' : ' enabled-header-sticky'; ?>">
+							<div class="container-header-sticky">
+								<div class="logo-sticky"><a href="<?php echo $block->getUrl('');?>" title="<?php echo __('Logo');?>"><img src="<?php echo ($this->helper('ddv\Themeoption\Helper\Themeconfig')->getStickyLogoHeader() != '') ? $this->helper('ddv\Themeoption\Helper\Themeconfig')->getStickyLogoHeader() : $this->getViewFileUrl("images/logo_sticky.png");?>" alt="<?php echo __('Logo');?>"/></a></div>
+								<div class="top-menu- top-menu-sticky">
+								  <?php echo $this->getChildHtml("custom.topnav"); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	require([
+		'jquery',
+		'mage/mage'
+	], function ($) {
+		'use strict';
+		jQuery('.top-bar-menu li.menu-item-has-children-lk .sub-menu').hide();
+		jQuery('.top-bar-menu li.menu-item-has-children-lk').on({
+			  mouseenter: function(){
+				$(this).find(".sub-menu").slideDown();
+			  },
+			  mouseleave: function(){
+				$(this).find(".sub-menu").slideUp();
+			  }
+			});
+
+	});
+</script>

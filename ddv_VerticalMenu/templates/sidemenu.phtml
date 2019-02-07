@@ -1,0 +1,51 @@
+<?php
+    $_helper = $this->helper('ddv\VerticalMenu\Helper\Data');
+    $_config = $_helper->getConfig('verticalmenu');
+    $columnsLimit = 0;
+    if($_config['general']['enable']) {
+?>
+<?php $_menu = $block->getVerticalMenuHtml(); ?>
+
+<nav class="navigation verticalmenu side-verticalmenu">
+	<h2 class="title-category-dropdown"><span><?php echo __('Categories'); ?></span></h2>
+    <ul class="togge-menu list-category-dropdown list-category-hover" style="display:none;">
+        <?php echo $_menu; ?>
+		<li class="expand-category-link"></li>
+	</ul>
+</nav>
+
+<script type="text/javascript">
+    require([
+        'jquery',
+        'ddv/verticalmenu'
+    ], function ($) {
+        $(".verticalmenu").VerticalMenu();
+		$('.cms-index-index .navigation.verticalmenu .togge-menu').show();
+		$('.title-category-dropdown').click(function(event){
+			$('.navigation.verticalmenu .togge-menu').slideToggle('slow');
+			$(this).toggleClass('active');
+		});
+		$( document ).ready(function() {
+			var lenghtLi = $('.cms-index-index .navigation.verticalmenu .ui-menu-item.level0').length;
+			var limitItemShow = <?php echo $block->getConfig('limit_show'); ?>;
+			if(lenghtLi > limitItemShow)
+			{
+				$('.navigation.verticalmenu .ui-menu-item.level0').each(function( index ) {
+					if(index >= (limitItemShow - 1))
+					{
+						$(this).addClass('orther-link');
+						$(this).hide();
+					}
+				});
+				$('.navigation.verticalmenu .expand-category-link').show();
+				$('.navigation.verticalmenu .expand-category-link').on( "click", function() {
+					$(this).toggleClass('expanding');
+					$('.navigation.verticalmenu .ui-menu-item.level0.orther-link').slideToggle('slow');
+				});
+			}
+		});
+    });
+</script>
+<?php
+    }
+?>
